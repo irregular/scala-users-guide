@@ -1,0 +1,67 @@
+<section id="constants">
+  <h3>Constants</h3>
+
+  <p>A constant has a name starting with an uppercase character.  It should
+  be assigned a value at most once. In the current implementation of
+  ruby, reassignment of a constant generates a warning but not an error
+  (the non-ANSI version of eval.rb does not report the warning):</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b>fluid=30</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 30</b></font><br>
+  ruby&gt;<font color="#ffff00"><b>fluid=31</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 31</b></font><br>
+  ruby&gt;<font color="#ffff00"><b>Solid=32</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 32</b></font><br>
+  ruby&gt;<font color="#ffff00"><b>Solid=33</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; (eval):1: warning: already initialized constant Solid</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 33</b></font></div>
+
+  <p>Constants may be defined within classes, but unlike instance
+  variables, they are accessible outside the class.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class ConstClass</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C1=101</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C2=102</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C3=103</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def show</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "#{C1} #{C2} #{C3}"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> C1</b></font><br>
+  <font color="#50ffff"><b>ERR: (eval):1: uninitialized constant C1</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ConstClass::C1</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 101</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ConstClass.new.show</b></font><br>
+  101 102 103<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>Constants can also be defined in modules.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> module ConstModule</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C1=101</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C2=102</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; C3=103</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def showConstants</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "#{C1} #{C2} #{C3}"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> C1</b></font><br>
+  <font color="#50ffff"><b>ERR: (eval):1: uninitialized constant C1</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> include ConstModule</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; Object</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> C1</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 101</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> showConstants</b></font><br>
+  101 102 103<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> C1=99&nbsp; # not really a good idea</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> C1</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ConstModule::C1</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 101</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ConstModule::C1=99&nbsp;&nbsp; # .. this was not allowed in earlier versions</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; (eval):1: warning: already initialized constant C1</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ConstModule::C1&nbsp; # "enough rope to shoot yourself in the foot"</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font></div>
+</section>

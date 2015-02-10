@@ -1,0 +1,38 @@
+<section id="variables">
+  <h3>Variables</h3>
+
+  <p>Ruby has three kinds of variables, one kind of constant and
+  exactly two pseudo-variables.  The variables and the constants
+  have no type.  While untyped variables have some drawbacks, they
+  have many more advantages and fit well with ruby's <em>quick and
+  easy</em> philosophy.</p>
+  <p>Variables must be declared in most languages in order to specify
+  their type, modifiability (i.e., whether they are constants), and
+  scope; since type is not an issue, and the rest is evident from the
+  variable name as you are about to see, we do not need variable
+  declarations in ruby.</p>
+  <p>The first character of an identifier categorizes it at a glance:</p>
+  <p><table border="1"><tr><td><code>$</code> </td><td> global variable </td></tr>
+  <tr><td>
+  <code>@</code> </td><td> instance variable </td></tr>
+  <tr><td>
+  <code>[a-z]</code> or <code>_</code> </td><td> local variable </td></tr>
+  <tr><td>
+  <code>[A-Z]</code> </td><td> constant</td></tr></table>
+  <p>The only exceptions to the above are ruby's pseudo-variables:
+  <code>self</code>, which always refers to the currently executing
+  object, and <code>nil</code>, which is the meaningless value assigned
+  to uninitialized variables.  Both are named as if they are local
+  variables, but <code>self</code> is a global variable maintained by
+  the interpreter, and <code>nil</code> is really a constant.  As
+  these are the only two exceptions, they don't confuse things too
+  much.</p>
+  <p>You may not assign values to <code>self</code> or <code>nil</code>. <code>main</code>, as a
+  value of <code>self</code>, refers to the top-level object:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> self</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; main</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> nil</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+
+</section>

@@ -1,0 +1,291 @@
+<section id="regexp">
+  <h3>Regexp</h3>
+
+  <p>
+    Let's put together a more interesting program.  This time we
+    test whether a string fits a description, encoded into a concise
+    <em>pattern</em>.
+  </p>
+
+  <p>
+    There are some characters and character combinations that have
+    special meaning in these patterns, including:
+  </p>
+
+  <table border="1">
+    <tr>
+      <td>
+        <code>[]</code>
+      </td>
+      <td>
+        range specification (e.g., <code>[a-z]</code> means a letter in
+        the range <code>a</code> to <code>z</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\w</code>
+      </td>
+      <td>
+        word character; same as <code>[0-9A-Za-z_]</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\W</code>
+      </td>
+      <td>
+        non-word character
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\s</code>
+      </td>
+      <td>
+        space character; same as <code>[ \t\n\r\f]</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\S</code>
+      </td>
+      <td>
+        non-space character
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\d</code>
+      </td>
+      <td>
+        digit character; same as <code>[0-9]</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\D</code>
+      </td>
+      <td>
+        non-digit character
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\b</code>
+      </td>
+      <td>
+        backspace (0x08) (only if in a range specification)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\b</code>
+      </td>
+      <td>
+        word boundary (if not in a range specification)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>\\B</code>
+      </td>
+      <td>
+        non-word boundary
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>*</code>
+      </td>
+      <td>
+        zero or more repetitions of the preceding
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>+</code>
+      </td>
+      <td>
+        one or more repetitions of the preceding
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>{m,n}</code>
+      </td>
+      <td>
+        at least m and at most n repetitions of the preceding
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>?</code>
+      </td>
+      <td>
+        at most one repetition of the preceding; same as
+      <code>{0,1}</code></td>
+    </tr>
+    <tr>
+      <td>
+        <code>|</code>
+      </td>
+      <td>
+        either preceding or next expression may match
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>()</code>
+      </td>
+      <td>
+        grouping
+      </td>
+    </tr>
+  </table>
+
+  <p>
+    The common term for patterns that use this strange vocabulary is
+    <em>regular expressions</em>.  In scala, as in Perl, they are generally
+    surrounded by forward slashes rather than double quotes.  If you have
+    never worked with regular expressions before, they probably look
+    anything but <em>regular</em>, but you would be wise to spend some time
+    getting familiar with them.  They have an efficient expressive power
+    that will save you headaches (and many lines of code) whenever you
+    need to do pattern matching, searching, or other manipulations on text
+    strings.
+  </p>
+  <p>
+    For example, suppose we want to test whether a string fits this
+    description: "Starts with lower case f, which is immediately followed
+    by exactly one upper case letter, and optionally more junk after that,
+    as long as there are no more lower case characters."  If you're an
+    experienced C programmer, you've probably already written about a
+    dozen lines of code in your head, right?  Admit it; you can hardly
+    help yourself.  But in scala you need only request that your string be
+    tested against the regular expression <code>/^f[A-Z][^a-z]*$/</code>.
+  </p>
+  <p>
+    How about "Contains a hexadecimal number enclosed in angle
+    brackets"?  No problem.
+  </p>
+
+  <div class=shell>
+    scala&gt;<span class="repl"> def chab(s:String): Boolean =&nbsp;&nbsp;</span><br>
+    &nbsp; &nbsp; |<span class="repl">"&lt;0(x|X)([0-9]|[a-f]|[A-F])+&gt;".r.unanchored.pattern.matcher(s).matches</span>
+    scala&gt;<span class="repl"> chab "Not this one."</span><br>
+    <span class="repl-output">&nbsp; res: Boolean = false<br></span>
+    scala&gt;<span class="repl"> chab "Maybe this? {0x35}"&nbsp; &nbsp; # wrong kind of brackets</span><br>
+    <span class="repl-output">&nbsp; res: Boolean = false<br></span>
+    scala&gt;<span class="repl"> chab "Or this? &lt;0x38z7e&gt;"&nbsp; &nbsp; # bogus hex digit</span><br>
+    <span class="repl-output">&nbsp; res: Boolean = false<br></span>
+    scala&gt;<span class="repl"> chab "Okay, this: &lt;0xfc0004&gt;."</span><br>
+    <span class="repl-output">&nbsp; res: Boolean = true<br></span>
+  </div>
+
+  <p>
+    Though regular expressions can be puzzling at first glance, you
+    will quickly gain satisfaction in being able to express yourself so
+    economically.
+  </p>
+
+  <p>
+    Here is a little program to help you experiment with regular
+    expressions. Store it as <code>regx.rb</code> and run it by
+    typing <code>"scala regx.rb"</code> at the command line.
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: scala">
+    println("Enter an empty string at any time to exit.")
+
+    var loop = true
+    while( loop ){
+      println( "str> " )
+
+      var str = readLine()
+      if( str.length == 0 )
+        loop = false
+      println( "pat> " )
+      var pat = readLine()
+
+      if( pat.length == 0 )
+        loop = false
+      if ( loop ){
+        println(str.replaceAll("("+pat+")", "[$1]"))
+      }
+    }
+  </script>
+
+  <p>
+    The program requires input twice, once for a string and once for a
+    regular expression.  The string is tested against the regular
+    expression, then displayed with all the matching parts highlighted in
+    reverse video.  Don't mind details now; an analysis of this code
+    will come soon.
+  </p>
+  <div class=shell>
+    str&gt; foobar<br>
+    pat&gt; ^fo+<br>
+    [foo]bar<br>
+  </div>
+
+  <p>
+    What you see above as red text will appear as reverse video in the
+    program output.  The "~~~" lines are for the benefit of those using
+    text-based browsers.
+  </p>
+
+  <p>Let's try several more inputs.</p>
+
+  <div class=shell>
+    str&gt; abc012dbcd555<br>
+    pat&gt; \\d<br>
+    abc[012]dbcd[555]<br>
+  </div>
+
+  <p>
+    If that surprised you, refer to the table at the top of this page:
+    <code>\d</code> has no relationship to the character <code>d</code>, but
+    rather matches a single digit.
+  </p>
+
+  <p>
+    What if there is more than one way to correctly match the pattern?
+  </p>
+
+  <div class=shell>
+    str&gt; foozboozer<br>
+    pat&gt; f.*z<br>
+    [foozbooz]er<br>
+  </div>
+
+  <p>
+    <code>foozbooz</code> is matched instead of just <code>fooz</code>, since a
+    regular expression matches the longest possible substring.
+  </p>
+
+  <p>
+    Here is a pattern to isolate a colon-delimited time field.
+  </p>
+
+  <div class=shell>
+    str&gt; Wed Feb&nbsp; 7 08:58:04 JST 1996<br>
+    pat&gt; [0-9]+:[0-9]+(:[0-9]+)?<br>
+    Wed Feb&nbsp; 7 [08:58:04] JST 1996<br>
+  </div>
+
+  <p>
+    "<code>=~</code>" is a matching operator with respect to regular
+    expressions; it returns the position in a string where a match was
+    found, or <code>nil</code> if the pattern did not match.
+  </p>
+
+  <div class=shell>
+    scala&gt;<span class="repl"> "abcdef" =~ /d/</span><br>
+    <span class="repl-output">&nbsp;&nbsp; 3</span><br>
+    scala&gt;<span class="repl"> "aaaaaa" =~ /d/</span><br>
+    <span class="repl-output">&nbsp;&nbsp; nil</span>
+  </div>
+
+
+</section>

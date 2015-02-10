@@ -1,0 +1,71 @@
+<section id="objinitialization">
+  <h3>Object initialization</h3>
+
+  <p>Our Fruit class from the previous chapter had two instance variables,
+  one to describe the kind of fruit and another to describe its
+  condition.  It was only after writing a custom <code>inspect</code>
+  method for the class that we realized it didn't make sense for a piece
+  of fruit to lack those characteristics.  Fortunately, ruby provides a
+  way to ensure that instance variables always get initialized.</p>
+  <h3><a name="label-0" id="label-0">The <code>initialize</code> method</a></h3><!-- RDLabel: "The initialize method" -->
+  <p>Whenever Ruby creates a new object, it looks for a method named
+  <code>initialize</code> and executes it.  So one simple thing we can
+  do is use an <code>initialize</code> method to put default values into
+  all the instance variables, so the <code>inspect</code> method will
+  have something to say.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def initialize</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind = "apple"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @condition = "ripe"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f4 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe apple"</b></font></div>
+
+  <h3><a name="label-1" id="label-1">Changing assumptions to requirements</a></h3><!-- RDLabel: "Changing assumptions to requirements" -->
+  <p>There will be times when a default value doesn't make a lot of sense.
+  Is there such a thing as a default kind of fruit?  It may be
+  preferable to require that each piece of fruit have its kind specified
+  at the time of its creation.  To do this, we would add a formal
+  argument to the <code>initialize</code> method.  For reasons we won't
+  get into here, arguments you supply to <code>new</code> are actually
+  delivered to <code>initialize</code>.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def initialize( k )</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind = k</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @condition = "ripe"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f5 = Fruit.new "mango"</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe mango"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f6 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>ERR: (eval):1:in `initialize': wrong # of arguments(0 for 1)</b></font></div>
+
+  <h3><a name="label-2" id="label-2">Flexible initialization</a></h3><!-- RDLabel: "Flexible initialization" -->
+  <p>Above we see that once an argument is associated with the
+  <code>initialize</code> method, it can't be left off without
+  generating an error.  If we want to be more considerate, we can use
+  the argument if it is given, or fall back to default values otherwise.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def initialize( k="apple" )</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind = k</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @condition = "ripe"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f5 = Fruit.new "mango"</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe mango"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f6 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe apple"</b></font></div>
+
+  <p>You can use default argument values for any method, not just
+  <code>initialize</code>.  The argument list must be arranged so that
+  those with default values come last.</p>
+  <p>Sometimes it is useful to provide several ways to initialize an
+  object.  Although it is outside the scope of this tutorial, ruby
+  supports object reflection and variable-length argument lists, which
+  together effectively allow method overloading.</p>
+
+</section>

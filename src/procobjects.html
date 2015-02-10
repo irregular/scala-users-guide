@@ -1,0 +1,60 @@
+<section id="procobjects">
+  <h3>Proc objects</h3>
+
+  <p>It is often desirable to be able to specify responses to unexpected
+  events.  As it turns out, this is most easily done if we can pass
+  blocks of code as arguments to other methods, which means we want to
+  be able to treat code as if it were data.</p>
+  <p>A new <em>procedure object</em> is formed using <code>proc</code>:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> quux = proc {</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "QUUXQUUXQUUX!!!"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> }</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Proc:0x4017357c&gt;</b></font></div>
+
+  <p>Now what <code>quux</code> refers to is an object, and like most
+  objects, it has behavior that can be invoked.  Specifically, we
+  can ask it to execute, via its <code>call</code> method:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> quux.call</b></font><br>
+  QUUXQUUXQUUX!!!<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>So, after all that, can <code>quux</code> be used as a method
+  argument? Sure.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> def run( p )</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "About to call a procedure..."</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; p.call</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "There: finished."</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> run quux</b></font><br>
+  About to call a procedure...<br>
+  QUUXQUUXQUUX!!!<br>
+  There: finished.<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>The <code>trap</code> method lets us assign the response of our choice
+  to any system signal.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> inthandler = proc{ puts "^C was pressed." }</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Proc:0x401730a4&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> trap "SIGINT", inthandler</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Proc:0x401735e0&gt;</b></font></div>
+
+  <p>Normally pressing <em>^C</em> makes the interpreter quit.  Now a
+  message is printed and the interpreter continues running, so you don't
+  lose the work you were doing.  (You're not trapped in the
+  interpreter forever; you can still exit by typing <code>exit</code>.)</p>
+  <p>A final note before we move on to other topics: it's not strictly
+  necessary to give a procedure object a name before binding it to a
+  signal.  An equivalent <em>anonymous</em> procedure object would
+  look like</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> trap "SIGINT", proc{ puts "^C was pressed." }</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>or more compactly still,</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> trap "SIGINT", 'puts "^C was pressed."'</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>This abbreviated form provides some convenience and readability
+  when you write small anonymous procedures.</p>
+
+</section>

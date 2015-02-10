@@ -1,0 +1,137 @@
+<section id="control">
+  <h3>Control</h3>
+
+  <p>This chapter explores more of ruby's control structures.</p>
+  <h3><a name="label-0" id="label-0"><code>case</code></a></h3><!-- RDLabel: "case" -->
+  <p>We use the <code>case</code> statement to test a sequence of
+  conditions.  This is superficially similar to <code>switch</code>
+  in C and Java but is considerably more powerful, as we shall see.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> i=8</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> case i</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> when 1, 2..5</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "1..5"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> when 6..10</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "6..10"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  6..10<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p><code>2..5</code> is an expression which means the <em>range</em>
+  between 2 and 5, inclusive.  The following expression tests
+  whether the value of <code>i</code> falls within that range: </p>
+  <p><div class=rbscript>(2..5) === i</div>
+
+  <p><code>case</code> internally uses the relationship operator <code>===</code> to
+  check for several conditions at a time.  In keeping with ruby's
+  object oriented nature, <code>===</code> is interpreted suitably for the
+  object that appeared in the <code>when</code> condition.  For example,
+  the following code tests string equality in the first <code>when</code>, and
+  regular expression matching in the second <code>when</code>.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> case 'abcdef'</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> when 'aaa', 'bbb'</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "aaa or bbb"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> when /def/</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; puts "includes /def/"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  includes /def/<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <h3><a name="label-1" id="label-1"><code>while</code></a></h3><!-- RDLabel: "while" -->
+  <p>Ruby provides convenient ways to construct loops, although you will
+  find in the next chapter that learning how to use <em>iterators</em>
+  will make it unnecessary to write explicit loops very often.</p>
+  <p>A <code>while</code> is a repeated <code>if</code>.  We used it in our
+  word-guessing puzzle and in the regular expression programs (see the
+  <a href="regexp.html">previous chapter</a>); there, it took the form
+  <code>while <em>condition</em> ... end</code> surrounding a block of code to
+  be repeated while <em>condition</em> was true.  But <code>while</code>
+  and <code>if</code> can as easily be applied to individual statements:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> i = 0</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 0</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> puts "It's zero." if i==0</b></font><br>
+  It's zero.<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> puts "It's negative." if i&lt;0</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> puts i+=1 while i&lt;3</b></font><br>
+  1<br>
+  2<br>
+  3<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>Sometimes you want to negate a test condition.  An
+  <code>unless</code> is a negated <code>if</code>, and an <code>until</code> is a negated
+  <code>while</code>.  We'll leave it up to you to experiment with these.</p>
+  <p>There are four ways to interrupt the progress of a loop from
+  inside.  First, <code>break</code> means, as in C, to escape from the
+  loop entirely.  Second, <code>next</code> skips to the beginning of
+  the next iteration of the loop (corresponding to C's
+  <code>continue</code>).  Third, ruby has <code>redo</code>, which
+  restarts the current iteration.  The following is C code
+  illustrating the meanings of <code>break</code>, <code>next,</code> and
+  <code>redo</code>:</p>
+  <p><div class=cscript>while (condition) {<br>
+   label_redo:<br>
+  &nbsp;&nbsp; goto label_next;&nbsp; &nbsp; &nbsp; &nbsp; /* ruby's "next" */<br>
+  &nbsp;&nbsp; goto label_break;&nbsp; &nbsp; &nbsp;&nbsp; /* ruby's "break" */<br>
+  &nbsp;&nbsp; goto label_redo;&nbsp; &nbsp; &nbsp; &nbsp; /* ruby's "redo" */<br>
+  &nbsp;&nbsp; ...<br>
+  &nbsp;&nbsp; ...<br>
+   label_next:<br>
+  }<br>
+  label_break:<br>
+  ...</div>
+
+  <p>The fourth way to get out of a loop from the inside is
+  <code>return</code>.  An evaluation of <code>return</code> causes
+  escape not only from a loop but from the method that contains the
+  loop.  If an argument is given, it will be returned from the
+  method call, otherwise <code>nil</code> is returned.</p>
+  <h3><a name="label-2" id="label-2"><code>for</code></a></h3><!-- RDLabel: "for" -->
+  <p>C programmers will be wondering by now how to make a "for" loop.
+  Ruby's <code>for</code> can serve the same purpose, but adds some
+  flexibility.  The loop below runs once for each element in a
+  <em>collection</em> (array, hash, numeric sequence, etc.), but doesn't
+  make the programmer think about indices:</p>
+  <p><div class=rbscript>for elt in collection<br>
+  &nbsp; # ... here, elt refers to an element of the collection<br>
+  end</div>
+
+  <p>The collection can be a range of values (this is what most people
+  mean when they talk about a for loop):</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> for num in (4..6)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp; puts num</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  4<br>
+  5<br>
+  6<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 4..6</b></font></div>
+
+  <p>In this example we step through some array elements:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> for elt in [100,-9.6,"pickle"]</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp; puts "#{elt}\t(#{elt.class})"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  100&nbsp; &nbsp; (Fixnum)<br>
+  -9.6&nbsp;&nbsp; (Float)<br>
+  pickle (String)<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [100, -9.6, "pickle"]</b></font></div>
+
+  <p>But we're getting ahead of ourselves.  <code>for</code> is really
+  another way of writing <code>each</code>, which, it so happens, is our first
+  example of an iterator.  The following two forms are
+  equivalent:</p>
+  <p><div class=rbscript>#&nbsp; If you're used to C or Java, you might prefer this.<br>
+  for element in collection<br>
+  &nbsp; ...<br>
+  end<br>
+  <br>
+  #&nbsp; A Smalltalk programmer might prefer this.<br>
+  collection.each {|element|<br>
+  &nbsp; ...<br>
+  }</div>
+
+  <p>Iterators can often be substituted for conventional loops, and once
+  you get used to them, they are generally easier to deal with.  So
+  let's move on and learn more about them.</p>
+
+</section>

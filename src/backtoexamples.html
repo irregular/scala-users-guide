@@ -1,0 +1,234 @@
+<section id="backtoexamples">
+  <h3> Back to examples </h3>
+
+  <p>Now let's take apart the code of some of our previous example
+  programs.</p>
+  <p>The following appeared in the <a href="examples.html">simple examples</a> chapter.</p>
+  <p><div class=rbscript>def fact(n)<br>
+  &nbsp; if n == 0<br>
+  &nbsp; &nbsp; 1<br>
+  &nbsp; else<br>
+  &nbsp; &nbsp; n * fact(n-1)<br>
+  &nbsp; end<br>
+  end<br>
+  puts fact(ARGV[0].to_i)</div>
+
+  <p>Because this is the first explanation, we examine each line
+  individually.</p>
+  <h3><a name="label-0" id="label-0">Factorials</a></h3><!-- RDLabel: "Factorials" -->
+  <p><div class=rbscript>def fact(n)</div>
+
+  <p>In the first line, <code>def</code> is a statement to define a function
+  (or, more precisely, a <em>method</em>; we'll talk more about what a
+  method is in a <a href="methods.html">later chapter</a>).  Here, it
+  specifies that the function <code>fact</code> takes a single argument,
+  referred to as <code>n</code>.</p>
+  <p><div class=rbscript>if n == 0</div>
+
+  <p>The <code>if</code> is for checking a condition. When the condition
+  holds, the next bit of code is evaluated; otherwise whatever follows the
+  <code>else</code> is evaluated.</p>
+  <p><div class=rbscript>1</div>
+
+  <p>The value of <code>if</code> is 1 if the condition holds.</p>
+  <p><div class=rbscript>else</div>
+
+  <p>If the condition does not hold, the code from here to <code>end</code> is
+  evaluated.</p>
+  <p><div class=rbscript>n * fact(n-1)</div>
+
+  <p>If the condition is not satisfied, the value of <code>if</code> is
+  the result of <code>n</code> times <code>fact(n-1)</code>.</p>
+  <p><div class=rbscript>end</div>
+
+  <p>The first <code>end</code> closes the <code>if</code> statement.</p>
+  <p><div class=rbscript>end</div>
+
+  <p>The second <code>end</code> closes the <code>def</code> statement.</p>
+  <p><div class=rbscript>puts fact(ARGV[0].to_i)</div>
+
+  <p>This invokes our <code>fact()</code> function using a value specified
+  from the command line, and prints the result.</p>
+  <p><code>ARGV</code> is an array which contains command line arguments.
+  The members of <code>ARGV</code> are strings, so we must convert this into a
+  integral number by <code>to_i</code>.  Ruby does not convert strings into
+  integers automatically like perl does.</p>
+  <p>What would happen if we fed this program a negative number? Do you see
+  the problem? Can you fix it?</p>
+  <h3><a name="label-1" id="label-1">Strings</a></h3><!-- RDLabel: "Strings" -->
+  <p>Next we examine the puzzle program from the chapter
+  on <a href="strings.html">strings</a>.  As this is somewhat longer,
+  we number the lines for reference.</p>
+  <p><div class=rbscript>01 words = ['foobar', 'baz', 'quux']<br>
+  02 secret = words[rand(3)]<br>
+  03<br>
+  04 print "guess? "<br>
+  05 while guess = STDIN.gets<br>
+  06&nbsp;&nbsp; guess.chop!<br>
+  07&nbsp;&nbsp; if guess == secret<br>
+  08&nbsp; &nbsp;&nbsp; puts "You win!"<br>
+  09&nbsp; &nbsp;&nbsp; break<br>
+  10&nbsp;&nbsp; else<br>
+  11&nbsp; &nbsp;&nbsp; puts "Sorry, you lose."<br>
+  12&nbsp;&nbsp; end<br>
+  13&nbsp;&nbsp; print "guess? "<br>
+  14 end<br>
+  15 puts "the word is ", secret, "."</div>
+
+  <p>In this program, a new control structure, <code>while</code>, is used.  The
+  code between <code>while</code> and its corresponding <code>end</code> will execute
+  repeatedly as long as some specified condition remains true.  In this
+  case, <code>guess=STDIN.gets</code> is both an active statement (collecting a
+  line of user input and storing it as <code>guess</code>), and a condition (if
+  there is no input, <code>guess</code>, which repesents the value of the whole
+  <code>guess=STDIN.gets</code> expression, has a nil value, causing
+  <code>while</code> to stop looping).</p>
+  <p><code>STDIN</code> is the standard input object.  Usually,
+  <code>guess=gets</code> does the same thing as <code>guess=STDIN.gets</code>.</p>
+  <p><code>rand(3)</code> in line 2 returns a random number
+  in the range 0 to 2.  This random number is used to extract one
+  of the members of the array <code>words</code>.</p>
+  <p>In line 5 we read one line from standard input by the method
+  <code>STDIN.gets</code>.  If <em>EOF</em> (end of file) occurs
+  while getting the line, <code>gets</code> returns
+  <code>nil</code>.  So the code associated with this
+  <code>while</code> will repeat until it sees <em>^D</em> (try
+  <em>^Z</em> or <em>F6</em> under DOS/Windows), signifying the end of input.</p>
+  <p><code>guess.chop!</code> in line 6 deletes the last character from
+  <code>guess</code>; in this case it will always be a <em>newline</em> character,
+  <code>gets</code> includes that character to reflect the user's <em>Return</em>
+  keystroke, but we're not interested in it.</p>
+  <p>In line 15 we print the secret word.  We have written this as a
+  <code>puts</code> (<code>put s</code>tring) statement with two arguments, which
+  are printed one after the other; but it would have been equally
+  effective to do it with a single argument, writing <code>secret</code> as
+  <code>#{secret}</code> to make it clear that it is a variable to be
+  evaluated, not a literal word to be printed:</p>
+  <p><div class=rbscript>puts "the word is #{secret}."</div>
+
+  <p>Many programmers feel this is a cleaner way to express output; it builds a
+  single string and presents it as a single argument to <code>puts</code>.</p>
+  <p>Also, we are by now used to the idea of using <code>puts</code> for standard
+  script output, but this script uses <code>print</code> instead, in lines 4
+  and 13.  They are not quite the same thing.  <code>print</code> outputs
+  exactly what it is given; <code>puts</code> also ensures that the output line
+  ends.  Using <code>print</code> in lines 4 and 13 leaves the cursor next to
+  what was just printed, rather than moving it to the beginning of the
+  next line.  This creates a recognizable prompt for user input.  In
+  general, the four output calls below are equivalent:</p>
+  <p><div class=rbscript># newline is implicitly added by puts if there isn't one already:<br>
+  puts&nbsp; "Darwin's wife, Esmerelda, died in a fit of penguins."<br>
+  <br>
+  # newline must be explicitly given to the print command:<br>
+  print "Darwin's wife, Esmerelda, died in a fit of penguins.\n"<br>
+  <br>
+  # you can concatenate output with +:<br>
+  print 'Darwin's wife, Esmerelda, died in a fit of penguins.'+"\n"<br>
+  <br>
+  # or concatenate by supplying more than one string:<br>
+  print 'Darwin's wife, Esmerelda, died in a fit of penguins.', "\n"</div>
+
+  <p>One possible gotcha: sometimes a text window is programmed to buffer
+  output for the sake of speed, collecting individual characters and
+  displaying them only when it is given a newline character.  So if the
+  guessing game script misbehaves by not showing the prompt lines until
+  after the user supplies a guess, buffering is the likely culprit.  To
+  make sure this doesn't happen, you can <code>flush</code> the output as soon
+  as you have printed the prompt.  It tells the standard output device
+  (an object named <code>STDOUT</code>), "don't wait; display what you have in
+  your buffer right now."</p>
+  <p><div class=rbscript>04 print "guess? "; STDOUT.flush<br>
+  &nbsp; ...<br>
+  13 print "guess? "; STDOUT.flush</div>
+
+  <p>And in fact, we were more careful with this in the next script.</p>
+  <h3><a name="label-2" id="label-2">Regular expressions</a></h3><!-- RDLabel: "Regular expressions" -->
+  <p>Finally we examine this program from the chapter on <a href="regexp.html">regular
+  expressions</a>.</p>
+  <p><div class=rbscript>01 st = "\033[7m"<br>
+  02 en = "\033[m"<br>
+  03<br>
+  04 puts "Enter an empty string at any time to exit."<br>
+  05<br>
+  06 while true<br>
+  07&nbsp;&nbsp; print "str&gt; "; STDOUT.flush; str=gets.chop<br>
+  08&nbsp;&nbsp; break if str.empty?<br>
+  09&nbsp;&nbsp; print "pat&gt; "; STDOUT.flush; pat=gets.chop<br>
+  10&nbsp;&nbsp; break if pat.empty?<br>
+  11&nbsp;&nbsp; re = Regexp.new(pat)<br>
+  12&nbsp;&nbsp; puts str.gsub(re, "#{st}\\&amp;#{en}")<br>
+  13 end</div>
+
+  <p>In line 6, the condition for <code>while</code> is hardwired to <code>true</code>,
+  so it forms what looks like an infinite loop.  However we put
+  <code>break</code> statements in the 8th and 10th lines to escape the loop.
+  These two <code>break</code>s are also an example of "<code>if</code> modifiers."
+  An <code>if</code> modifier executes the statement on its left hand side if
+  and only if the specified condition is satisfied.  This construction
+  is unusual in that it operates logically from right to left, but it is
+  provided because for many people it mimics a similar pattern in
+  natural speech. It also has the advantage of brevity, as it needs no
+  <code>end</code> statement to tell the interpreter how much of the following
+  code is supposed to be conditional.  An <code>if</code> modifier is
+  conventionally used in situations where a statement and condition
+  are short enough to fit comfortably together on one script line.</p>
+  <p>Note the difference in the user interface compared to the
+  string-guessing script.  This one lets the user quit by hitting the
+  <em>Return</em> key on an empty line.  We are testing for emptiness of
+  the input string, not for its nonexistence.</p>
+  <p>In lines 7 and 9 we have a "non-destructive" chop; again, we're
+  getting rid of the unwanted newline character we always get from
+  <code>gets</code>.  Add the exclamation point, and we have a "destructive"
+  chop.  What's the difference?  In ruby, we conventionally attach
+  '<code>!</code>' or '<code>?</code>' to the end of certain method names.  The
+  exclamation point (<code>!</code>, sometimes pronounced aloud as "bang!")
+  indicates something potentially destructive, that is to say, something
+  that can change the value of what it touches.  <code>chop!</code> affects a
+  string directly, but <code>chop</code> gives you a chopped copy without
+  damaging the original.  Here is an illustration of the difference.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> s1 = "forth"</b></font><br>
+  &nbsp; "forth"<br>
+  ruby&gt;<font color="#ffff00"><b> s1.chop!&nbsp; &nbsp; &nbsp;&nbsp; # This changes s1.</b></font><br>
+  &nbsp; "fort"<br>
+  ruby&gt;<font color="#ffff00"><b> s2 = s1.chop&nbsp;&nbsp; # This puts a changed copy in s2,</b></font><br>
+  &nbsp; "for"<br>
+  ruby&gt;<font color="#ffff00"><b> s1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; # ... without disturbing s1.</b></font><br>
+  &nbsp; "fort"</div>
+
+  <p>You'll also sometimes see <code>chomp</code> and <code>chomp!</code> used.  These
+  are more selective: the end of a string gets bit off <em>only if it
+  happens to be a newline.</em> So for example, <code>"XYZ".chomp!</code> does
+  nothing.  If you need a trick to remember the difference, think of a
+  person or animal tasting something before deciding to take a bite, as
+  opposed to an axe chopping indiscriminately.</p>
+  <p>The other method naming convention appears in lines 8 and 10.  A
+  question mark (<code>?</code>, sometimes pronounced aloud as "huh?")
+  indicates a "predicate" method, one that can return either <code>true</code>
+  or <code>false</code>.</p>
+  <p>Line 11 creates a regular expression object out of the string supplied
+  by the user.  The real work is finally done in line 12, which uses
+  <code>gsub</code> to <code>g</code>lobally <code>sub</code>stitute each match of that
+  expression with itself, but surrounded by ansi markups; also the same
+  line outputs the results.</p>
+  <p>We could have broken up line 12 into separate lines like this:</p>
+  <p><div class=rbscript>highlighted = str.gsub(re,"#{st}\\&amp;#{en}")<br>
+  puts highlighted</div>
+
+  <p>or in "destructive" style:</p>
+  <p><div class=rbscript>str.gsub!(re,"#{st}\\&amp;#{en}")<br>
+  puts str</div>
+
+  <p>Look again at the last part of line 12.  <code>st</code> and <code>en</code> were
+  defined in lines 1-2 as the ANSI sequences that make text
+  color-inverted and normal, respectively.  In line 12 they are enclosed
+  in <code>#{}</code> to ensure that they are actually interpreted as such (and
+  we do not see the variable <em>names</em> printed instead).  Between
+  these we see <code>\\&amp;</code>.  This is a little tricky.  Since the
+  replacement string is in double quotes, the pair of backslashes will
+  be interpreted as a single backslash; what <code>gsub</code> actually sees
+  will be <code>\&amp;</code>, and that happens to be a special code that refers to
+  whatever matched the pattern in the first place.  So the new string,
+  when displayed, looks just like the old one, except that the parts
+  that matched the given pattern are highlighted in inverse video.</p>
+
+</section>

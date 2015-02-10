@@ -1,0 +1,69 @@
+<section id="redefinemethods">
+  <h3>Redefine methods</h3>
+
+  <p>In a subclass, we can change the behavior of the instances by
+  redefining superclass methods.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Human</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def identify</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "I'm a person."</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def train_toll(age)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; if age &lt; 12</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp; &nbsp;&nbsp; puts "Reduced fare.";</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; else</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp; &nbsp;&nbsp; puts "Normal fare.";</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> Human.new.identify</b></font><br>
+  I'm a person.<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> class Student1&lt;Human</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def identify</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "I'm a student."</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> Student1.new.identify</b></font><br>
+  I'm a student.<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>Suppose we would rather enhance the superclass's <code>identify</code>
+  method than entirely replace it.  For this we can use <code>super</code>.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Student2&lt;Human</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def identify</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; super</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "I'm a student too."</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> Student2.new.identify</b></font><br>
+  I'm a person.<br>
+  I'm a student too.<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p><code>super</code> lets us pass arguments to the original method.
+  It is sometimes said that there are two kinds of people...</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Dishonest&lt;Human</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def train_toll(age)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; super(11) # we want a cheap fare.</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> Dishonest.new.train_toll(25)</b></font><br>
+  Reduced fare. <br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  <font color="#50ffff"><b></b></font><br>
+  ruby&gt;<font color="#ffff00"><b> class Honest&lt;Human</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def train_toll(age)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; super(age) # pass the argument we were given</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> Honest.new.train_toll(25)</b></font><br>
+  Normal fare. <br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+
+</section>

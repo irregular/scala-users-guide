@@ -1,0 +1,47 @@
+<section id="getstarted">
+  <h3>Get Started</h3>
+  <p>
+    First, you'll want to check whether scala is installed.
+    From the shell prompt (denoted here by <code>%</code> so don't type it, <code>&gt;</code> denotes the last commant output), type
+  </p>
+
+  <div class=shell>
+    % scala -version
+  </div>
+
+  <p>
+    (<code>-version</code> tells the interpreter to print the version of scala), then press the <em>Enter</em> key.
+    If scala is installed, you will see a message something like the following:
+  </p>
+
+  <div class=shell>
+    % scala -version<br>
+    > Scala code runner version 2.11.4 -- Copyright 2002-2013, LAMP/EPFL
+  </div>
+
+  <p>
+    If scala is not installed,
+    you can ask your administrator to install it,
+    or you can do it yourself,
+    since scala is free software with no restrictions on its installation or use.
+  </p>
+
+  <p>
+    Now, let's play with scala.  You can place a scala program directly on the command line using the <code>-e</code> option:
+  </p>
+
+  <div class=shell>
+    % scala -e 'println("Hello world")'<br>
+    > Hello World
+  </div>
+
+  <p>
+    More conventionally, a scala program can be stored in a file.
+  </p>
+
+  <div class=shell>
+    % echo "println("Hello world")" &gt; hello.scala<br>
+    % scala hello.scala<br>
+    > Hello World
+  </div>
+</section>

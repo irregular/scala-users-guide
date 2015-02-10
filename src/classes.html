@@ -1,0 +1,68 @@
+<section id="classes">
+  <h3>Classes</h3>
+
+  <p>The real world is filled by objects, and we can classify
+  them.  For example, a very small child is likely to say "bow-wow"
+  when seeing a dog, regardless of the breed; we naturally see the world
+  in terms of these categories.</p>
+  <p>In OO programming terminology, a category of objects like "dog" is
+  called a <em>class</em>, and some specific object belonging to a class
+  is called an <em>instance</em> of that class.</p>
+  <p>Generally, to make an object in ruby or any other OO language,
+  first one defines the characteristics of a class, then creates an
+  instance.  To illustrate the process, let's first define a simple
+  <code>Dog</code> class.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Dog</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def speak</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; puts "Bow Wow"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>In ruby, a class definition is a region of code between the keywords
+  <code>class</code> and <code>end</code>.  A <code>def</code> inside this region begins the
+  definition of a <em>method</em> of the class, which as we discussed in
+  the previous chapter, corresponds to some specific behavior for
+  objects of that class.</p>
+  <p>Now that we have defined a <code>Dog</code> class, we can use it to
+  make a dog:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> pochi = Dog.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Dog:0xbcb90&gt;</b></font></div>
+
+  <p>We have made a new instance of the class <code>Dog</code>, and have
+  given it the name <code>pochi</code>.  The <code>new</code>
+  method of any class makes a new instance.  Because
+  <code>pochi</code> is a <code>Dog</code> according to our class
+  definition, it has whatever properties we decided a <code>Dog</code>
+  should have.  Since our idea of <code>Dog</code>-ness was very
+  simple, there is just one trick we can ask <code>pochi</code> to
+  do.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> pochi.speak</b></font><br>
+  Bow Wow<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>Making a new instance of a class is sometimes called
+  <em>instantiating</em> that class.  We need to have a dog before we
+  can experience the pleasure of its conversation; we can't merely ask
+  the Dog <em>class</em> to bark for us.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> Dog.speak</b></font><br>
+  <font color="#50ffff"><b>ERR: (eval):1: undefined method `speak' for Dog:class</b></font></div>
+
+  <p>It makes no more sense than trying to <em>eat the concept of a
+  sandwich</em>.</p>
+  <p>On the other hand, if we want to hear the sound of a dog without
+  getting emotionally attached, we can create (instantiate) an ephemeral,
+  temporary dog, and coax a little noise out of it before it
+  disappears.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> (Dog.new).speak&nbsp;&nbsp; # or more commonly, Dog.new.speak</b></font><br>
+  Bow Wow<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>"Wait," you say, "what's all this about the poor fellow
+  disappearing afterwards?" It's true: if we don't bother to give
+  it a name (as we did for <code>pochi</code>), ruby's automatic garbage
+  collection decides it is an unwanted stray dog, and mercilessly
+  disposes of it.  Really it's okay, you know, because we can make
+  all the dogs we want.</p>
+
+</section>

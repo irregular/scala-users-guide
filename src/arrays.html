@@ -1,0 +1,68 @@
+<section id="arrays">
+  <h3>Arrays</h3>
+
+  <p>You can create an <em>array</em> by listing some items within
+  square brackets (<code>[]</code>) and separating them with
+  commas. Ruby's arrays can accomodate diverse object types.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> ary = [1, 2, "3"]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [1, 2, "3"]</b></font></div>
+
+  <p>Arrays can be concatenated or repeated just as strings can.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> ary + ["foo", "bar"]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [1, 2, "3", "foo", "bar"]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary * 2</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [1, 2, "3", 1, 2, "3"]</b></font></div>
+
+  <p>We can use index numbers to refer to any part of a array.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> ary[0]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 1</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary[0,2]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [1, 2]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary[0..1]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [1, 2]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary[-2]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary[-2,2]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [2, "3"]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> ary[-2..-1]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [2, "3"]</b></font></div>
+
+  <p>(Negative indices mean offsets from the end of an array, rather than
+  the beginning.)</p>
+  <p>Arrays can be converted to and from strings, using <code>join</code>
+  and <code>split</code> respecitvely:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> str = ary.join(":")</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "1:2:3"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> str.split(":")</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; ["1", "2", "3"]</b></font></div>
+
+  <h2><a name="label-0" id="label-0">Hashes</a></h2><!-- RDLabel: "Hashes" -->
+  <p>An associative array has elements that are accessed not by
+  sequential index numbers, but by <em>keys</em> which can have any sort
+  of value.  Such an array is sometimes called a <em>hash</em> or
+  <em>dictionary</em>; in the ruby world, we prefer the term
+  <em>hash</em>.  A hash can be constructed by quoting pairs of items
+  within curly braces (<code>{}</code>).  You use a key to find
+  something in a hash, much as you use an index to find something in an
+  array.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> h = {1 =&gt; 2, "2" =&gt; "4"}</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; {1=&gt;2, "2"=&gt;"4"}</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h[1]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h["2"]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "4"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h[5]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h[5] = 10&nbsp; &nbsp; # appending an entry</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 10</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; {5=&gt;10, 1=&gt;2, "2"=&gt;"4"}</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h.delete 1&nbsp;&nbsp; # deleting an entry by key</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h[1]</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> h</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; {5=&gt;10, "2"=&gt;"4"}</b></font></div>
+
+
+</section>

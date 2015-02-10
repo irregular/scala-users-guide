@@ -1,0 +1,40 @@
+<section id="singletonmethods">
+  <h3>Singleton methods</h3>
+
+  <p>The behavior of an instance is determined by its class, but there
+  may be times we know that a particular instance should have special
+  behavior.  In most languages, we must go to the trouble of
+  defining another class, which would then only be instantiated
+  once.  In ruby we can give any object its own methods.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class SingletonTest</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def size</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; 25</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> test1 = SingletonTest.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;SingletonTest:0xbc468&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> test2 = SingletonTest.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;SingletonTest:0xbae20&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> def test2.size</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp; 10</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> test1.size</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 25</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> test2.size</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 10</b></font></div>
+
+  <p>In this example, <code>test1</code> and <code>test2</code> belong to
+  same class, but <code>test2</code> has been given a redefined
+  <code>size</code> method and so they behave differently.  A method
+  given only to a single object is called a <em>singleton method</em>.</p>
+  <p>Singleton methods are often used for elements of a graphic user
+  interface (GUI), where different actions need to be taken when
+  different buttons are pressed.</p>
+  <p>Singleton methods are not unique to ruby, as they appear in CLOS,
+  Dylan, etc.  Also, some languages, for example, Self and
+  NewtonScript, have singleton methods only.  These are sometimes
+  called <em>prototype-based</em> languages. </p>
+
+</section>

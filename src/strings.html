@@ -1,0 +1,161 @@
+<section id="strings">
+  <h3>Strings</h3>
+
+  <p>
+    Scala deals with strings as well as numerical data.  A string
+    may be double-quoted ("...")
+  </p>
+  <div class=shell>
+    scala&gt; <span class="repl">"abc"</span><br>
+    <span class="repl-output">res: String = abc</span><br>
+    scala&gt; <span class="repl">'abc'</span><br>
+    &lt;console&gt;:1: error: unclosed character literal<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;'abc'<br>
+    scala&gt; <span class="repl">'a'</span><br>
+    <span class="repl-output">res: Char = a</span><br>
+  </div>
+
+  <p>
+    Single-quotes may only be use with a single character.
+  </p>
+
+  <h5>Escape characters &amp; Interpolation</h5>
+
+  <div class=shell>
+    scala&gt;<span class="repl"> println("a\nb\nc")</span><br>
+    <span class="repl-output">a</span><br>
+    <span class="repl-output">b</span><br>
+    <span class="repl-output">c</span><br>
+    scala&gt;<span class="repl"> println("\\n") </span><br>
+    <span class="repl-output">\n</span><br>
+    scala&gt;<span class="repl"> println(s"abcd ${5*3} efg")</span><br>
+    <span class="repl-output">abcd 15 efg</span><br>
+    scala&gt;<span class="repl"> var s:String = " abc "</span><br>
+    <span class="repl-output">s: String = abc</span><br>
+    scala&gt;<span class="repl"> println(s"1234$s5678")</span><br>
+    <span class="repl-output">1234 abc 5678</span><br>
+    scala&gt;<span class="repl"> println(s"12$s.length45678")</span><br>
+    <span class="repl-output">12 abc .length45678</span><br>
+    scala&gt;<span class="repl"> println(s"12${ s.length }45678")</span><br>
+    <span class="repl-output">12 3 45678</span>
+  </div>
+
+  <p>
+    Scala's string handling is smarter and more intuitive than Java's.
+    For instance, you can concatenate strings with <code>+</code>,
+    and repeat a string many times with <code>*</code>:
+  </p>
+  <div class=shell>
+    scala&gt;<span class="repl"> "foo" + "bar"</span><br>
+    <span class="repl-output">res: String = foobar</span><br>
+    scala&gt;<span class="repl"> "abc" * 2</span><br>
+    <span class="repl-output">res: String = abcabc</span>
+  </div>
+
+  <p>
+    Concatenating strings is much more awkward in Java:
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: java">
+    <![CDATA[
+        a = new StringBuilder()
+          .append(a)
+          .append(b)
+          .toString();
+    ]]>
+  </script>
+
+  <p>Here are some things you can do with strings.</p>
+
+  <p>Concatenation:</p>
+  <div class=shell>
+    scala&gt;<span class="repl"> var word = "fo" + "o"</span><br>
+    <span class="repl-output">word: String = foo</span>
+  </div>
+
+  <p>Repetition:</p>
+  <div class=shell>
+    scala&gt;<span class="repl"> var word = "foo" * 2</span><br>
+    <span class="repl-output">word: String = foofoo</span>
+  </div>
+
+  <p>Extracting characters:</p>
+  <div class=shell>
+    scala&gt;<span class="repl"> "foo"(0)</span><br>
+    <span class="repl-output">res: Char = f</span>
+  </div>
+
+  <p>Extracting substrings:</p>
+  <div class=shell>
+    scala&gt;<span class="repl"> herb = "parsley"</span><br>
+    <span class="repl-output">herb: String = parsley</span><br>
+    scala&gt;<span class="repl"> herb.take(1)</span><br>
+    <span class="repl-output">res: String = p</span><br>
+    scala&gt;<span class="repl"> herb.drop(4).take(2)</span><br>
+    <span class="repl-output">res: String = ey</span><br>
+  </div>
+
+  <p>Testing for equality:</p>
+
+  <div class=shell>
+    scala&gt;<span class="repl"> "foo" == "foo"</span><br>
+    <span class="repl-output">res: Boolean = true</span><br>
+    scala&gt;<span class="repl"> "foo" == "bar"</span><br>
+    <span class="repl-output">res: Boolean = false</span>
+  </div>
+
+  <p>
+    Now, let's put some of these features to use.  This puzzle is
+    "guess the word," but perhaps the word "puzzle" is too dignified
+    for what is to follow <code>;-)</code>
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: scala">
+    <![CDATA[
+      /* save this as guess.scala */
+      import scala.util.control.Breaks._
+
+      var words = Array( "foobar", "baz", "quux" )
+      var secret = words( scala.util.Random.nextInt(3) )
+
+      println( "guess? " )
+
+      breakable {
+        for ( guess <- io.Source.stdin.getLines ){
+          if( guess == secret ){
+            println( "You win!" )
+            break
+          } else {
+            println( "Sorry, you lose.!" )
+          }
+
+          println( "guess? " )
+        }
+      }
+
+      println( s"The work was $secret." )
+
+    ]]>
+  </script>
+
+  <p>
+    For now, don't worry too much about the details of this code.
+    Here is what a run of the puzzle program looks like.
+  </p>
+
+  <div class=shell>
+    % scala guess.scala
+    guess?<br>
+    foobar<br>
+    Sorry, you lose.!<br>
+    baz<br>
+    You win!<br>
+    The work was baz.<br>
+  </div>
+
+  <p>
+    (I should have done a bit better, considering the 1/3 probability
+    of success.)
+  </p>
+
+</section>

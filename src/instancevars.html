@@ -1,0 +1,40 @@
+<section id="instancevars">
+  <h3>Instance variables</h3>
+
+  <p>An instance variable has a name beginning with <code>@</code>, and its
+  scope is confined to whatever object <code>self</code> refers to.
+  Two different objects, even if they belong to the same class, are
+  allowed to have different values for their instance variables.
+  From outside the object, instance variables cannot be altered or even
+  observed (i.e., ruby's instance variables are never <em>public</em>)
+  except by whatever methods are explicitly provided by the
+  programmer.  As with globals, instance variables have the
+  <code>nil</code> value until they are initialized.</p>
+  <p>Instance variables do not need to be declared.  This indicates a flexible
+  object structure; in fact, each instance variable is dynamically
+  appended to an object when it is first assigned.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class InstTest</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def set_foo(n)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @foo = n</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def set_bar(n)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @bar = n</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> i = InstTest.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;InstTest:0x83678&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> i.set_foo(2)</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> i</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;InstTest:0x83678 @foo=2&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> i.set_bar(4)</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 4</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> i</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;InstTest:0x83678 @foo=2, @bar=4&gt;</b></font></div>
+
+  <p>Notice above that <code>i</code> does not report a value for
+  <code>@bar</code> until after the <code>set_bar</code> method is
+  invoked.</p>
+
+</section>

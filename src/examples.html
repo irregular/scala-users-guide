@@ -1,0 +1,114 @@
+<section id="examples">
+  <h3>Examples</h3>
+
+  <p>
+    Let's write a function to compute factorials.
+    The mathematical definition of <code>n</code> factorial is:
+  </p>
+
+  <pre>
+    n! = 1           (when n==0)
+       = n * (n-1)!  (otherwise)
+  </pre>
+
+  <p>
+    In scala, this can be written as:
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: scala">
+    <![CDATA[
+      def factorial(n: Int):Int = {
+        if ( n == 0 )
+          return 1
+        else
+          return n * factorial(n - 1)
+      }
+    ]]>
+  </script>
+
+  <p>
+    You may notice the repeated occurrence of <code>end</code>.
+    Scala has been called "Algol-like" because of this.
+    (Actually, the syntax of scala more closely mimics that of a langage named
+    Eiffel.) You may also notice the lack of a <code>return</code>
+    statement.  It is unneeded because a scala function returns the
+    last thing that was evaluated in it.  Use of a <code>return</code>
+    statement here is permissible but unnecessary.
+  </p>
+
+  <p>
+    Let's try out our factorial function.  Adding one line of code
+    gives us a working program:
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: scala">
+    <![CDATA[
+      /**
+      Program to find the factorial of a number<br>
+      Save this as fact.rb<br>
+      **/
+
+      def factorial(n: Int):Int = {
+        if ( n == 0 )
+          return 1
+        else
+          return n * factorial(n - 1)
+      }
+
+      println(factorial( args(0).toInt ))
+    ]]>
+  </script>
+
+  <p>
+    Here, <code>args</code> is an array which contains the command line
+    arguments, and <code>toInt</code> converts a character string to an
+    integer.
+  </p>
+
+  <div class=shell>
+    % scala factorial.rb 1<br>
+    > 1<br>
+    % scala factorial.rb 5<br>
+    > 120
+  </div>
+
+  <p>
+    Does it work with an argument of 40? It would make your calculator
+    overflow...
+  </p>
+
+  <div class=shell>
+    % scala factorial.rb 40<br>
+    > 0
+  </div>
+
+  <p>
+    Nop.
+    More on this <a href="#">later</a>.
+  </p>
+
+  <h5>
+    The REPL
+  </h5>
+
+  <p>
+    When you invoke scala with no arguments, it starts the scala
+    <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop"> REPL </a>
+  </p>
+
+  <div class=shell>
+    % scala<br>
+    scala&gt; <span class="repl">println("hello world")</span><br>
+    <span class="repl-output">hello world</span><br>
+    scala&gt; <span class="repl">println("good-bye world")</span><br>
+    <span class="repl-output">good-bye world</span><br>
+    ^DC-R
+  </div>
+
+  <p>
+    The <em>^D</em> above means control-D, a conventional way to signal
+    end-of-input in a Unix context. C-R denotes 'Enter'.
+    From now on <code>scala&gt;</code> denotes we are in the REPL.
+  </p>
+
+</section>

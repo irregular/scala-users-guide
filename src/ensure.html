@@ -1,0 +1,50 @@
+<section id="ensure">
+  <h3>Ensure</h3>
+
+  <p>There may be cleanup work that is necessary when a method finishes
+  its work.  Perhaps an open file should be closed, buffered data
+  should be flushed, etc.  If there were always only one exit point
+  for each method, we could confidently put our cleanup code in one
+  place and know that it would be executed; however, a method might
+  return from several places, or our intended cleanup code might be
+  unexpectedly skipped because of an exception.</p>
+  <p><div class=rbscript>file = open("/tmp/some_file", "w")<br>
+  begin<br>
+  &nbsp; # ... write to the file ...<br>
+  &nbsp; file.close<br>
+  end</div>
+
+  <p>In the above, if an exception occurred during the section of code
+  where we were writing to the file, the file would be left open.
+  And we don't want to resort to this kind of redundancy:</p>
+  <p><div class=rbscript>file = open("/tmp/some_file", "w")<br>
+  begin<br>
+  &nbsp; # ... write to the file ...<br>
+  &nbsp; file.close<br>
+  rescue<br>
+  &nbsp; file.close<br>
+  &nbsp; fail # raise an exception<br>
+  end</div>
+
+  <p>It's clumsy, and gets out of hand when the code gets more
+  complicated because we have to deal with every <code>return</code> and
+  <code>break</code>.</p>
+  <p>For this reason we add another keyword to the
+  "<code>begin...rescue...end</code>" scheme, which is
+  <code>ensure</code>.  The <code>ensure</code> code block executes
+  regardless of the success or failure of the <code>begin</code> block.</p>
+  <p><div class=rbscript>file = open("/tmp/some_file", "w")<br>
+  begin<br>
+  &nbsp; # ... write to the file ...<br>
+  rescue<br>
+  &nbsp; # ... handle the exceptions ...<br>
+  ensure<br>
+  &nbsp; file.close&nbsp;&nbsp; # ... and this always happens.<br>
+  end</div>
+
+  <p>It is possible to use <code>ensure</code> without
+  <code>rescue</code>, or vice versa, but if they are used together in
+  the same<code> begin...end </code>block, the <code>rescue</code> must
+  precede the <code>ensure</code>.</p>
+
+</section>

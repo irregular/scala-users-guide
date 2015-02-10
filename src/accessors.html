@@ -1,0 +1,138 @@
+<section id="accessors">
+  <h3>What is an accessor?</h3><!-- RDLabel: "What is an accessor?" -->
+  <p>We briefly discussed instance variables in an earlier chapter, but
+  haven't done much with them yet.  An object's instance variables are
+  its attributes, the things that distinguish it from other objects of
+  the same class.  It is important to be able to write and read these
+  attributes; doing so requires methods called <em>attribute
+  accessors</em>.  We'll see in a moment that we don't always have to
+  write accessor methods explicitly, but let's go through all the
+  motions for now.  The two kinds of accessors are <em>writers</em> and
+  <em>readers</em>.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def set_kind(k)&nbsp; # a writer</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind = k</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def get_kind&nbsp; &nbsp;&nbsp; # a reader</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f1 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Fruit:0xfd7e7c8c&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f1.set_kind("peach")&nbsp; # use the writer</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "peach"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f1.get_kind&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; # use the reader</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "peach"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # inspect the object</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Fruit:0xfd7e7c8c @kind="peach"&gt;</b></font></div>
+
+  <p>Simple enough; we can store and retrieve information about
+  what kind of fruit we're looking at.  But our method names are a
+  little wordy.  The following is more concise, and more
+  conventional:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def kind=(k)</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind = k</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def kind</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @kind</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Fruit:0xfd7e7c8c&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2.kind = "banana"</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "banana"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2.kind</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "banana"</b></font></div>
+
+  <h3><a name="label-1" id="label-1">The <code>inspect</code> method</a></h3><!-- RDLabel: "The inspect method" -->
+  <p>A short digression is in order.  You've noticed by now that when we
+  try to look at an object directly, we are shown something cryptic like
+  <code>#&lt;anObject:0x83678&gt;</code>.  This is just a default
+  behavior, and we are free to change it.  All we need to do is add
+  a method named <code>inspect</code>.  It should return a string
+  that describes the object in some sensible way, including the
+  states of some or all of its instance variables.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def inspect</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; "a fruit of the #{@kind} variety"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a fruit of the banana variety"</b></font></div>
+
+  <p>A related method is <code>to_s</code> (convert to string), which is
+  used when printing an object.  In general, you can think of
+  <code>inspect</code> as a tool for when you are writing and debugging
+  programs, and <code>to_s</code> as a way of refining program output.
+  <code>eval.rb</code> uses <code>inspect</code> whenever it displays
+  results.  You can use the <code>p</code> method to easily get
+  debugging output from programs.</p>
+  <p><div class=rbscript># These two lines are equivalent:<br>
+  p anObject<br>
+  puts anObject.inspect</div>
+
+  <h3><a name="label-2" id="label-2">Making accessors the easy way</a></h3><!-- RDLabel: "Making accessors the easy way" -->
+  <p>Since many instance variables need accessor methods, Ruby provides
+  convenient shortcuts for the standard forms.</p>
+  <p><table border="1"><tr><td><em> Shortcut </em> </td><td> <em> Effect </em> </td></tr>
+  <tr><td>
+  <code> attr_reader :v </code> </td><td> <code> def v; @v; end </code> </td></tr>
+  <tr><td>
+  <code> attr_writer :v </code> </td><td> <code> def v=(value); @v=value; end </code> </td></tr>
+  <tr><td>
+  <code> attr_accessor :v </code> </td><td> <code> attr_reader :v; attr_writer :v </code> </td></tr>
+  <tr><td>
+  <code> attr_accessor :v, :w </code> </td><td> <code> attr_accessor :v; attr_accessor :w </code></td></tr></table>
+  <p>Let's take advantage of this and add freshness information.  First
+  we ask for an automatically generated reader and writer, and then we
+  incorporate the new information into <code>inspect</code>:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; attr_accessor :condition</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def inspect</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; "a #{@condition} #{@kind}"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2.condition = "ripe"</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "ripe"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe banana"</b></font></div>
+
+  <h3><a name="label-3" id="label-3">More fun with fruit</a></h3><!-- RDLabel: "More fun with fruit" -->
+  <p>If nobody eats our ripe fruit, perhaps we should let time take its
+  toll.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> class Fruit</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; def time_passes</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp; &nbsp;&nbsp; @condition = "rotting"</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; end</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a ripe banana"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2.time_passes</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "rotting"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> f2</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "a rotting banana"</b></font></div>
+
+  <p>But while playing around here, we have introduced a small problem.
+  What happens if we try to create a third piece of fruit now?  Remember
+  that instance variables don't exist until values are assigned to
+  them.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> f3 = Fruit.new</b></font><br>
+  <font color="#50ffff"><b>ERR: failed to convert nil into String</b></font></div>
+
+  <p>It is the <code>inspect</code> method that is complaining here, and
+  with good reason.  We have asked it to report on the kind and
+  condition of a piece of fruit, but as yet <code>f3</code> has not been
+  assigned either attribute.  If we wanted to, we could rewrite the
+  <code>inspect</code> method so it tests instance variables using
+  the<code> defined? </code>method and then only reports on them if they
+  exist, but maybe that's not very useful; since every piece of fruit
+  has a kind and condition, it seems we should make sure those always
+  get defined somehow.  That is the topic of the next chapter.</p>
+
+</section>

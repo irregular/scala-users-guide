@@ -1,0 +1,111 @@
+<section id="localvars">
+  <h3>Local variables</h3>
+
+  <p>A local variable has a name starting with a lower case letter or an
+  underscore character (<code>_</code>).  Local variables do
+  not, like globals and instance variables, have the value
+  <code>nil</code> before initialization:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> $foo</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> @foo</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> foo</b></font><br>
+  <font color="#50ffff"><b>ERR: (eval):1: undefined local variable or method `foo' for main(Object)</b></font></div>
+
+  <p>The first assignment you make to a local variable acts something like
+  a declaration.  If you refer to an uninitialized local variable, the
+  ruby interpreter cannot be sure whether you are referencing a bogus
+  variable; you might, for example, have misspelled a method name. Hence the
+  rather nonspecific error message you see above.</p>
+  <p>Generally, the scope of a local variable is one of</p>
+  <ul>
+  <li><code>proc{</code> ... <code>}</code></li>
+  <li><code>loop{</code> ... <code>}</code></li>
+  <li><code>def</code> ... <code>end</code></li>
+  <li><code>class</code> ... <code>end</code></li>
+  <li><code>module</code> ... <code>end</code></li>
+  <li>the entire script (unless one of the above applies)</li>
+  </ul>
+  <p>In the next example,<code> defined? </code> is an operator which checks
+  whether an identifier is defined.  It returns a description of the
+  identifier if it is defined, or <code>nil</code> otherwise.  As you see,
+  <code>bar</code>'s scope is local to the loop; when the loop exits, <code>bar</code>
+  is undefined.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> foo = 44; puts foo; defined?(foo)</b></font><br>
+  44<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; "local-variable"</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> loop{bar=45; puts bar; break}; defined?(bar)</b></font><br>
+  45<br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>Procedure objects that live in the same scope share whatever local
+  variables also belong to that scope.  Here, the local variable
+  <code>bar</code> is shared by <code>main</code> and the procedure objects
+  <code>p1</code> and <code>p2</code>:</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> bar=nil</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> p1 = proc{|n| bar=n}</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Proc:0x8deb0&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> p2 = proc{bar}</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; #&lt;Proc:0x8dce8&gt;</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> p1.call(5)</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 5</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> bar</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 5</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> p2.call</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 5</b></font></div>
+
+  <p>Note that the "<code>bar=nil</code>" at the beginning cannot be omitted; it
+  ensures that the scope of <code>bar</code> will encompass <code>p1</code> and
+  <code>p2</code>.  Otherwise <code>p1</code> and <code>p2</code> would each end up with its
+  own local variable <code>bar</code>, and calling <code>p2</code> would have resulted
+  in an "undefined local variable or method" error.  We could have said
+  <code>bar=0</code> instead, but using <code>nil</code> is a courtesy to others who
+  will read your code later. It indicates fairly clearly that you are
+  only establishing scope, because the value being assigned is not
+  intended to be meaningful.</p>
+  <p>A powerful feature of procedure objects follows from their ability
+  to be passed as arguments: shared local variables remain valid even
+  when they are passed out of the original scope.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> def box</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; contents = nil</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; get = proc{contents}</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; set = proc{|n| contents = n}</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b>&nbsp;&nbsp; return get, set</b></font><br>
+  &nbsp; &nbsp; |<font color="#ffff00"><b> end</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader, writer = box</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [#&lt;Proc:0x40170fc0&gt;, #&lt;Proc:0x40170fac&gt;] </b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader.call</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> writer.call(2)</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader.call</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 2</b></font></div>
+
+  <p>Ruby is particularly smart about scope.  It is evident in our
+  example that the <code>contents</code> variable is being shared between the
+  <code>reader</code> and <code>writer</code>.  But we can also manufacture
+  multiple reader-writer pairs using <code>box</code> as defined above; each
+  pair shares a <code>contents</code> variable, and the pairs do not interfere
+  with each other.</p>
+  <p><div class=shell>ruby&gt;<font color="#ffff00"><b> reader_1, writer_1 = box</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [#&lt;Proc:0x40172820&gt;, #&lt;Proc:0x4017280c&gt;]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader_2, writer_2 = box</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; [#&lt;Proc:0x40172668&gt;, #&lt;Proc:0x40172654&gt;]</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> writer_1.call(99)</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader_1.call</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; 99</b></font><br>
+  ruby&gt;<font color="#ffff00"><b> reader_2.call&nbsp; # nothing is in this box yet</b></font><br>
+  <font color="#50ffff"><b>&nbsp;&nbsp; nil</b></font></div>
+
+  <p>This kind of programming could be considered a perverse little
+  object-oriented framework.  The <code>box</code> method acts something like a
+  class, with <code>get</code> and <code>set</code> serving as methods (except those
+  aren't really the method <em>names</em>, which could vary with each box
+  instance) and <code>contents</code> being the lone instance variable.  Of
+  course, using ruby's legitimate class framework leads to much more
+  readable code.</p>
+
+</section>
